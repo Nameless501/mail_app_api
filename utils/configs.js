@@ -37,13 +37,11 @@ const sequelize = new Sequelize(MYSQLDATABASE, MYSQLUSER, MYSQLPASSWORD, {
 
 const eventsConfig = {
     connection: 'connection',
-    connected: 'connected',
+    autocomplete: 'autocomplete',
     authorization: 'authorization',
     signOut: 'signOut',
-    authorized: 'authorized',
-    newMessage: 'newMessage',
+    incomingMessage: 'incomingMessage',
     sendMessage: 'sendMessage',
-    messageSent: 'messageSent',
     error: 'error',
 };
 

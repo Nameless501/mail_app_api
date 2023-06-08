@@ -37,7 +37,7 @@ class Connection {
             if (receiver) {
                 this._webSocketServer
                     .to(receiver)
-                    .emit(eventsConfig.newMessage, message);
+                    .emit(eventsConfig.incomingMessage, message);
             }
         } catch {
             this._handleError(socket);
@@ -47,7 +47,7 @@ class Connection {
     _handleMessageSend = async (data, socket) => {
         try {
             const message = await this._saveMessage(data);
-            socket.emit(eventsConfig.messageSent, message);
+            socket.emit(eventsConfig.sendMessage, message);
             this._sendToReceiver(socket, message);
         } catch {
             this._handleError(socket);
@@ -59,7 +59,7 @@ class Connection {
             this._usersMap[data] = socket.id;
             const user = await this._findOrCreateUser(data);
             const messages = await this._getUserMessages(user.id);
-            socket.emit(eventsConfig.authorized, { user, messages });
+            socket.emit(eventsConfig.authorization, { user, messages });
         } catch {
             this._handleError(socket);
         }
@@ -69,6 +69,15 @@ class Connection {
         delete this._usersMap[name];
     };
 
+    _sendAutocompleteHint = async (socket) => {
+        try {
+            const names = await this._gatUsersNames();
+            socket.emit(eventsConfig.autocomplete, names);
+        } catch {
+            this._handleError(socket);
+        }
+    }
+
     _handleConnection = async (socket) => {
         socket.on(eventsConfig.authorization, (data) =>
             this._handleAuthorization(data, socket)
@@ -77,6 +86,7 @@ class Connection {
             this._handleMessageSend(data, socket)
         );
         socket.on(eventsConfig.signOut, this._handleSignOut);
+        socket.on(eventsConfig.autocomplete, () => this._sendAutocompleteHint(socket));
     };
 
     createWebSocketServer = () => {
