@@ -28,6 +28,7 @@ class Connection {
     };
 
     _handleError = (socket) => {
+        console.log('lol')
         socket.emit(eventsConfig.error, DEFAULT_ERROR_MESSAGE);
     };
 

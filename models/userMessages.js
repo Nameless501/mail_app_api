@@ -33,6 +33,6 @@ Message.belongsToMany(User, { through: UserMessages });
 
 User.belongsToMany(Message, { through: UserMessages });
 
-sequelize.sync({ alter: true });
+sequelize.sync();
 
 module.exports = { User, Message };
