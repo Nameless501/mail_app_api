@@ -1,16 +1,15 @@
-# <p align="center">Задание №4</p>
+# <p align="center">Задание №6</p>
 
 ---
 
 ### Описание:
 
-API - реализована аутентификация и авторизация (с помощью cookie), возможность создавать, удалять, блокировать/разблокировать пользоветелей.
-Деплой на RailwayApp.
+API - приложение для отправки сообщений между пользователями с помощью web socket.
 
 ---
 
 ### Стек:
 
-Node.js, Express.js, Sequelize, MySQL
+Node.js, Express.js, Sequelize, MySQL. Socket IO
 
 ---
