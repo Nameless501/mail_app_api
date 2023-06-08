@@ -1,6 +1,6 @@
 const io = require('socket.io');
 
-const { eventsConfig, webSocketsServerConfig } = require('../utils/configs');
+const { eventsConfig, webSocketsServerConfig, validationConfig } = require('../utils/configs');
 
 const { DEFAULT_ERROR_MESSAGE } = require('../utils/constants');
 
@@ -27,6 +27,13 @@ class Connection {
         );
     };
 
+    _validateData = (data, config) => {
+        const isValid = config.isValidSync(data);
+        if(!isValid) {
+            throw new Error();
+        }
+    }
+
     _handleError = (socket) => {
         socket.emit(eventsConfig.error, DEFAULT_ERROR_MESSAGE);
     };
@@ -46,6 +53,7 @@ class Connection {
 
     _handleMessageSend = async (data, socket) => {
         try {
+            this._validateData(data, validationConfig.message);
             const message = await this._saveMessage(data);
             socket.emit(eventsConfig.sendMessage, message);
             this._sendToReceiver(socket, message);
@@ -56,8 +64,9 @@ class Connection {
 
     _handleAuthorization = async (data, socket) => {
         try {
-            this._usersMap[data] = socket.id;
-            const user = await this._findOrCreateUser(data);
+            this._validateData(data, validationConfig.authorization);
+            this._usersMap[data.name] = socket.id;
+            const user = await this._findOrCreateUser(data.name);
             const messages = await this._getUserMessages(user.id);
             socket.emit(eventsConfig.authorization, { user, messages });
         } catch {

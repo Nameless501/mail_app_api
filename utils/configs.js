@@ -1,5 +1,7 @@
 const { Sequelize } = require('sequelize');
 
+const { object, string } = require('yup');
+
 require('dotenv').config();
 
 const { MYSQLHOST, MYSQLUSER, MYSQLDATABASE, MYSQLPASSWORD, MYSQLPORT } =
@@ -52,10 +54,23 @@ const webSocketsServerConfig = {
     },
 };
 
+const validationConfig = {
+    authorization: object({
+        name: string().required(),
+    }),
+    message: object({
+        from: string().required(),
+        to: string().required(),
+        subject: string().required(),
+        message: string().required(),
+    }),
+}
+
 module.exports = {
     corsConfig,
     loggerConfig,
     sequelize,
     eventsConfig,
     webSocketsServerConfig,
+    validationConfig,
 };
