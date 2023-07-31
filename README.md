@@ -1,15 +1,15 @@
-# <p align="center">Задание №6</p>
+# <p align="center">Simple Mail App (back-end)</p>
 
 ---
 
 ### Описание:
 
-API - приложение для отправки сообщений между пользователями с помощью web socket.
+API - приложения для отправки сообщений между пользователями с помощью web socket.
 
 ---
 
 ### Стек:
 
-Node.js, Express.js, Sequelize, MySQL. Socket IO
+Node.js, Express.js, Sequelize, MySQL, Socket IO
 
 ---
